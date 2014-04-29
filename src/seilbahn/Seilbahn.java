@@ -6,6 +6,7 @@ import seilbahn.gui.ControlRoom;
 
 public class Seilbahn{
 	public boolean applicationRunning = true;
+	public boolean hornReport = false;
 	
 	private ControlRoom controlRoom;
 	private STG stg;
@@ -39,5 +40,6 @@ public class Seilbahn{
 		stg.totalTerminate();
 		applicationRunning = false;
 	}
+	
 	
 }
