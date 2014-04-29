@@ -1,5 +1,6 @@
 package seilbahn.gui;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -13,6 +14,7 @@ import seilbahn.Seilbahn;
 public class ControlRoom extends JFrame{
 	Seilbahn seilbahn;
 	JButton startButton;
+	JButton stopButton;
 	
 	public ControlRoom(Seilbahn seilbahn){
 		this.seilbahn = seilbahn;
@@ -21,6 +23,7 @@ public class ControlRoom extends JFrame{
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setVisible(true);
+	    setLayout(new FlowLayout());
 	   
 	    initGUI();
 	    addListeners();
@@ -35,6 +38,14 @@ public class ControlRoom extends JFrame{
             }
         });
 		
+		stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               	System.out.println("Starting");
+               	seilbahn.stopSeilbahn();
+            }
+        });
+		
 		this.addWindowListener(new WindowAdapter()
 		{
 		    public void windowClosing(WindowEvent e)
@@ -46,7 +57,9 @@ public class ControlRoom extends JFrame{
 	}
 
 	private void initGUI() {
-	    startButton = new JButton("GO LANOVKA GO");
-	    this.add(startButton);
+	    startButton = new JButton("Start");
+	    stopButton = new JButton("Stop");
+	    this.add(startButton);	    
+	    this.add(stopButton);
 	}  
 }

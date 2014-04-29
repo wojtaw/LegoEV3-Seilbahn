@@ -41,6 +41,10 @@ public class STG implements Runnable{
 		engineState = 1;
 	}
 	
+	public void setStop(){
+		engineState = 3;
+	}	
+	
 	private void startSTG(){
 		System.out.println("Starting STG");
 		try {
@@ -76,8 +80,7 @@ public class STG implements Runnable{
 	private void stopSeilbahn(){
 		try {
 			mainEngine.setAcceleration(50);
-			mainEngine.stop(false);
-			mainEngine.close();			
+			mainEngine.stop(false);		
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

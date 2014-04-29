@@ -23,6 +23,10 @@ public class Seilbahn{
 		stg.setStart();
 	}
 	
+	public void stopSeilbahn(){
+		stg.setStop();
+	}
+	
 	public void forceQuit(){
 		stg.totalTerminate();
 		applicationRunning = false;
