@@ -12,10 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 
 import seilbahn.Seilbahn;
+import seilbahn.audio.AudioPlayer;
 
 public class ControlRoom extends JFrame implements ActionListener{
 	Seilbahn seilbahn;
-	JButton startButton,stopButton,emergencyStopButton;
+	JButton startButton,stopButton,emergencyStopButton, hornButton;
 	JRadioButton speed1,speed2,speed3,speed4;
 	
 	public ControlRoom(Seilbahn seilbahn){
@@ -55,6 +56,16 @@ public class ControlRoom extends JFrame implements ActionListener{
                	seilbahn.emergencyStop();
             }
         });
+		
+		hornButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               	System.out.println("Emergency stoping");
+               	seilbahn.hornReport = true;
+               	AudioPlayer.playHorn();
+               	enableStart();
+            }
+        });		
 				
 		
 		this.addWindowListener(new WindowAdapter()
@@ -66,15 +77,25 @@ public class ControlRoom extends JFrame implements ActionListener{
 		});
 		
 	}
+	
+	private void disableStart(){
+		startButton.setEnabled(false);
+	}
+	
+	private void enableStart(){
+		startButton.setEnabled(true);
+	}	
 
 	private void initGUI() {
 	    startButton = new JButton("Start");
+	    
 	    stopButton = new JButton("Stop");
-	    emergencyStopButton = new JButton("EMERGENCY STOP");	    
+	    hornButton = new JButton("Horn");
+	    emergencyStopButton = new JButton("EMERGENCY STOP");
+	    
 	    
 	    speed1 = new JRadioButton("Speed 1");
 	    speed1.setActionCommand("0");
-	    speed1.setSelected(true);
 	    speed1.addActionListener(this);
 	    
 	    speed2 = new JRadioButton("Speed 2");
@@ -83,6 +104,7 @@ public class ControlRoom extends JFrame implements ActionListener{
 	    
 	    speed3 = new JRadioButton("Speed 3");
 	    speed3.setActionCommand("2");
+	    speed3.setSelected(true);	    
 	    speed3.addActionListener(this);
 	    
 	    speed4 = new JRadioButton("Speed 4");
@@ -95,6 +117,7 @@ public class ControlRoom extends JFrame implements ActionListener{
 	    speedGroup.add(speed3);
 	    speedGroup.add(speed4);
 	    
+	    this.add(hornButton);
 	    this.add(startButton);	    
 	    this.add(stopButton);
 	    this.add(speed1);
@@ -103,6 +126,7 @@ public class ControlRoom extends JFrame implements ActionListener{
 	    this.add(speed4);
 	    this.add(emergencyStopButton);
 
+	    disableStart();	    
 	}  
 	
 	public void actionPerformed(ActionEvent e) {

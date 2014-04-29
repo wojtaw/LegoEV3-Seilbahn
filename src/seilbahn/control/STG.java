@@ -24,7 +24,7 @@ public class STG implements Runnable{
 	 * 4 - Emergency stop
 	 */
 	private int engineState = 0;
-	private int speed = 3;
+	private int speed = 2;
 	
 	public STG(Seilbahn seilbahn){
 		this.seilbahn = seilbahn;
@@ -42,7 +42,7 @@ public class STG implements Runnable{
     }	
 
 	public void setStart(){
-		engineState = 1;
+		if(seilbahn.hornReport) engineState = 1;
 	}
 	
 	public void setStop(){
@@ -61,7 +61,7 @@ public class STG implements Runnable{
 	private void startSTG(){
 		System.out.println("Starting STG");
 		try {
-			ev3 = new RemoteEV3("192.168.10.26");
+			ev3 = new RemoteEV3("192.168.10.126");
 		} catch (RemoteException | MalformedURLException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,10 +75,11 @@ public class STG implements Runnable{
 			try {
 				int currentSpeed = mainEngine.getSpeed();
 				int newSpeed;
-				if(speed == 0) newSpeed = 100;
-				else newSpeed = speed * 500;
+				if(speed == 0) newSpeed = 200;
+				else newSpeed = speed * 525;
 				
 				if(currentSpeed != newSpeed){
+					mainEngine.setAcceleration(50);
 					mainEngine.setSpeed(newSpeed);
 					System.out.println("Setting new speed "+newSpeed);
 				}
@@ -100,7 +101,6 @@ public class STG implements Runnable{
 			mainEngine.forward();	
 			Delay.msDelay(4000);
 			mainEngine.setAcceleration(50);
-			decideSpeed();
 			engineState = 2;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -111,7 +111,8 @@ public class STG implements Runnable{
 	private void stopSeilbahn(){
 		try {
 			mainEngine.setAcceleration(100);
-			mainEngine.stop(false);		
+			mainEngine.stop(true);
+			seilbahn.hornReport = false;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,7 +122,8 @@ public class STG implements Runnable{
 	private void stopEmergency(){
 		try {
 			mainEngine.setAcceleration(650);
-			mainEngine.stop(false);		
+			mainEngine.stop(true);	
+			seilbahn.hornReport = false;			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,7 +135,7 @@ public class STG implements Runnable{
 		try {
 			if(mainEngine != null){
 				mainEngine.setAcceleration(6000);
-				mainEngine.stop(true);
+				if(mainEngine.getSpeed() != 0) mainEngine.stop(true);
 				mainEngine.close();
 				Audio sound = ev3.getAudio();
 				sound.systemSound(3);				
