@@ -5,6 +5,10 @@ import seilbahn.gui.ControlRoom;
 
 
 public class Seilbahn{
+	public static String ipAddress = "192.168.10.26";
+	public static String mainEnginePort = "A";
+	public static char mainEngineType = 'M';
+	
 	public boolean applicationRunning = true;
 	
 	private ControlRoom controlRoom;

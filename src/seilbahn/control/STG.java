@@ -61,13 +61,13 @@ public class STG implements Runnable{
 	private void startSTG(){
 		System.out.println("Starting STG");
 		try {
-			ev3 = new RemoteEV3("192.168.10.26");
+			ev3 = new RemoteEV3(Seilbahn.ipAddress);
 		} catch (RemoteException | MalformedURLException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ev3.setDefault();
-		mainEngine = ev3.createRegulatedMotor("A", 'M');
+		mainEngine = ev3.createRegulatedMotor(Seilbahn.mainEnginePort, Seilbahn.mainEngineType);
 		System.out.println("STG Connected");
 	}
 	

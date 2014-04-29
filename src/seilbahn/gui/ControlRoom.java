@@ -1,5 +1,6 @@
 package seilbahn.gui;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,6 +93,7 @@ public class ControlRoom extends JFrame implements ActionListener{
 	    stopButton = new JButton("Stop");
 	    hornButton = new JButton("Horn");
 	    emergencyStopButton = new JButton("EMERGENCY STOP");
+	    emergencyStopButton.setBackground(Color.RED);
 	    
 	    
 	    speed1 = new JRadioButton("Speed 1");
