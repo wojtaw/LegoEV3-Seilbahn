@@ -27,6 +27,14 @@ public class Seilbahn{
 		stg.setStop();
 	}
 	
+	public void emergencyStop(){
+		stg.setEmergencyStop();
+	}
+	
+	public void changeSpeed(int speed){
+		stg.setSpeed(speed);
+	}
+	
 	public void forceQuit(){
 		stg.totalTerminate();
 		applicationRunning = false;

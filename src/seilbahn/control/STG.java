@@ -21,6 +21,7 @@ public class STG implements Runnable{
 	 * 1 - Starting
 	 * 2 - Running
 	 * 3 - Running with stop command
+	 * 4 - Emergency stop
 	 */
 	private int engineState = 0;
 	private int speed = 3;
@@ -32,17 +33,29 @@ public class STG implements Runnable{
 	public void run() {
 		startSTG();
 		while(seilbahn.applicationRunning){
+			//Engine state
 			if(engineState == 1) startSeilbahn();
-			if(engineState == 3) stopSeilbahn();
+			else if(engineState == 3) stopSeilbahn();
+			else if(engineState == 4) stopEmergency();
+			decideSpeed();
 		}		
     }	
-	
+
 	public void setStart(){
 		engineState = 1;
 	}
 	
 	public void setStop(){
 		engineState = 3;
+	}
+	
+	public void setEmergencyStop(){
+		engineState = 4;
+	}	
+	
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}	
 	
 	private void startSTG(){
@@ -58,6 +71,24 @@ public class STG implements Runnable{
 		System.out.println("STG Connected");
 	}
 	
+	private void decideSpeed() {
+			try {
+				int currentSpeed = mainEngine.getSpeed();
+				int newSpeed;
+				if(speed == 0) newSpeed = 100;
+				else newSpeed = speed * 500;
+				
+				if(currentSpeed != newSpeed){
+					mainEngine.setSpeed(newSpeed);
+					System.out.println("Setting new speed "+newSpeed);
+				}
+				
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
 	private void startSeilbahn(){
 		try {
 			for (int i = 0; i < 5; i++) {
@@ -67,9 +98,9 @@ public class STG implements Runnable{
 			
 			mainEngine.setSpeed(200);
 			mainEngine.forward();	
-			Delay.msDelay(5000);
+			Delay.msDelay(4000);
 			mainEngine.setAcceleration(50);
-			mainEngine.setSpeed(speed * 500);
+			decideSpeed();
 			engineState = 2;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -79,12 +110,22 @@ public class STG implements Runnable{
 	
 	private void stopSeilbahn(){
 		try {
-			mainEngine.setAcceleration(50);
+			mainEngine.setAcceleration(100);
 			mainEngine.stop(false);		
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void stopEmergency(){
+		try {
+			mainEngine.setAcceleration(650);
+			mainEngine.stop(false);		
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 	
 	public void totalTerminate(){
