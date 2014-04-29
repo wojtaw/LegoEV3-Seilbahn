@@ -31,6 +31,14 @@ public class ControlRoom extends JFrame implements ActionListener{
 	    initGUI();
 	    addListeners();
 	}
+	
+	public void disableStart(){
+		startButton.setEnabled(false);
+	}
+	
+	public void enableStart(){
+		startButton.setEnabled(true);
+	}		
 
 	private void addListeners() {
 		startButton.addActionListener(new ActionListener() {
@@ -60,8 +68,8 @@ public class ControlRoom extends JFrame implements ActionListener{
 		hornButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               	System.out.println("Emergency stoping");
-               	seilbahn.hornReport = true;
+               	System.out.println("Horn report");
+               	seilbahn.setHornReport(true);
                	AudioPlayer.playHorn();
                	enableStart();
             }
@@ -77,14 +85,6 @@ public class ControlRoom extends JFrame implements ActionListener{
 		});
 		
 	}
-	
-	private void disableStart(){
-		startButton.setEnabled(false);
-	}
-	
-	private void enableStart(){
-		startButton.setEnabled(true);
-	}	
 
 	private void initGUI() {
 	    startButton = new JButton("Start");
@@ -130,7 +130,6 @@ public class ControlRoom extends JFrame implements ActionListener{
 	}  
 	
 	public void actionPerformed(ActionEvent e) {
-	    System.out.println("Clicked "+e.getActionCommand());
 	    seilbahn.changeSpeed(Integer.parseInt(e.getActionCommand()));
 	}	
 }

@@ -42,7 +42,7 @@ public class STG implements Runnable{
     }	
 
 	public void setStart(){
-		if(seilbahn.hornReport) engineState = 1;
+		if(seilbahn.getHornReport()) engineState = 1;
 	}
 	
 	public void setStop(){
@@ -61,7 +61,7 @@ public class STG implements Runnable{
 	private void startSTG(){
 		System.out.println("Starting STG");
 		try {
-			ev3 = new RemoteEV3("192.168.10.126");
+			ev3 = new RemoteEV3("192.168.10.26");
 		} catch (RemoteException | MalformedURLException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -112,22 +112,24 @@ public class STG implements Runnable{
 		try {
 			mainEngine.setAcceleration(100);
 			mainEngine.stop(true);
-			seilbahn.hornReport = false;
+			seilbahn.setHornReport(false);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		engineState = 0;
 	}
 	
 	private void stopEmergency(){
 		try {
 			mainEngine.setAcceleration(650);
 			mainEngine.stop(true);	
-			seilbahn.hornReport = false;			
+			seilbahn.setHornReport(false);			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}	
+		engineState = 0;
 	}
 	
 	public void totalTerminate(){

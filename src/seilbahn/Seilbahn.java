@@ -6,10 +6,10 @@ import seilbahn.gui.ControlRoom;
 
 public class Seilbahn{
 	public boolean applicationRunning = true;
-	public boolean hornReport = false;
 	
 	private ControlRoom controlRoom;
 	private STG stg;
+	private boolean hornReport = false;	
 	
 	
 	public Seilbahn(){
@@ -39,6 +39,17 @@ public class Seilbahn{
 	public void forceQuit(){
 		stg.totalTerminate();
 		applicationRunning = false;
+	}
+	
+	public void setHornReport(boolean horn){
+		if(!horn){
+			controlRoom.disableStart();
+		}
+		hornReport = horn;
+	}
+	
+	public boolean getHornReport(){
+		return hornReport;
 	}
 	
 	
